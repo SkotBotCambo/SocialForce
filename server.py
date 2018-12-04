@@ -1,4 +1,5 @@
 from flask import Flask, send_from_directory
+import pickle
 import os
 
 '''Example taken from http://codepen.io/asommer70/blog/serving-a-static-directory-with-flask'''
@@ -14,11 +15,11 @@ def send_index():
         Plotly rendering. '''
     return send_from_directory('static/static_html', 'map3.html')
 
-@app.route('/csv/city-ratio-file.csv')
+@app.route('/map')
 def send_csv():
     '''send_csv() returns the csv file containing the most
     recent data from Google Trends.'''
-    return send_from_directory('static/csv/', 'city-ratio-file.csv')
+    return send_from_directory('static/csv/', 'city-ratio-correct-format.csv')
 
 if __name__ == "__main__":
     host_loc = "127.0.0.1"
