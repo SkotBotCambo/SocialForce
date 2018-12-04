@@ -1,0 +1,34 @@
+h1 {
+				color : #ccc;
+				font-family: "Advent Pro";
+				font-feature-settings: "'liga' 1";
+				font-kerning: auto;
+				font-style: normal;
+				font-size: 10em;
+				font-weight: 400;
+				letter-spacing: 0;
+				line-height: 1.5em;
+				text-align: center;
+				text-decoration: none;
+				text-transform: none;
+				word-spacing: 0;
+}
+
+h3 {
+				font-size:5em;
+				line-height:0.8em;
+				text-align:center;
+}
+
+#main {
+				text-align:center;
+}
+
+#footer {
+				text-align:center;
+}
+
+button {
+				margin-left:auto;
+				margin-right:auto;
+}

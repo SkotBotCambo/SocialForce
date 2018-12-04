@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+<title>Social Focus</title>
+
+<!-- Plotly.js -->
+<script type src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+<style>
+div#mydiv {
+
+  height: 100vh;
+  width: 100vw;
+}
+
+</style>
+</head>
+<body style="background-color:black">
+<!-- Plotly chart will be drawn inside this DIV -->
+<div id="myDiv"></div>
+<script type>
+
+  // In order to make this more readable, I moved the function definitions up here.
+  function unpack(rows, key) {
+            return rows.map(function(row) { return row[key]; });
+        }
+
+  //This is the function that is getting run every 5 seconds.
+  //You should put everything that has to happen every 5 seconds (or whatever interval you decide on) in here.
+  function update(rows){
+    console.log("update()")
+    scl = [[0, 'rgb(255,255,255)'],[1,'rgb(0, 0, 0)']];
+    window.rows = rows;
+
+    // 1. get 100 random data points and assign to rand_rows
+    // The code in the next couple of lines is only here so that you can test what happens
+    // when the map updates. When the project is finished, you'll need to remove this code
+    // and possibly make other modifications.
+    window.rand_rows = [];
+
+    for(i=0; i < 500; i++){
+     window.rand_rows.push(window.rows[Math.floor(Math.random() * window.rows.length)]);
+    }
+
+    var data = [{
+        type: 'scattergeo',
+        mode: 'markers',
+        locationmode: 'USA-states',
+        text: unpack(rand_rows, 'Globvalue'),
+        lon: unpack(rand_rows, 'Lon'),
+        lat: unpack(rand_rows, 'Lat'),
+        marker: {
+          color: unpack(rand_rows, 'Globvalue'),
+          colorscale: scl,
+          cmin: 0,
+          cmax: 1,
+          reversescale: true,
+          opacity: 1,
+          size: 1,
+        },
+        name: 'NA Precipitation'
+    }];
+
+    var layout = {
+      paper_bgcolor: 'rgb(000,000,000)',
+      showlegend: false,
+      geo:{
+        //scope: 'north america',
+        bgcolor: 'rgb(000,000,000)',
+        showland: true,
+        landcolor: 'rgb(255,255,255)',
+        subunitcolor: 'rgb(200,200,200)',
+        countrycolor: 'rgb(200,200,200)',
+        showlakes: true,
+        lakecolor: 'rgb(0,0,0)',
+        showsubunits: true,
+        showcountries: true,
+        resolution: 500,
+        projection: {
+          scale:(1.6),
+          type: 'conic conformal',
+          rotation: {
+            long: -100
+          }
+        },
+        center: {
+          lon: (-100),
+          lat: (22),
+        },
+      },
+      longaxis: {
+        showgrid: true,
+        gridwidth: 0.5,
+        range: [ -140.0, -55.0 ],
+        dtick: 5
+      },
+      lataxis: {
+        showgrid: true,
+        gridwidth: 0.,
+        range: [ 20.0, 60.0 ],
+        dtick: 5
+      },
+      title: 'City Relevancy',
+      width: 1080,
+      height: 720,
+      titlefont: {
+        family: 'Courier New, monospace',
+        size: 8,
+        color: 'rgb(255,255,255)',
+      }
+    };
+    Plotly.newPlot('myDiv', data, layout, {displayModeBar: false});
+  };
+
+  // This function is what is called when the CSV comes back.
+  // If errors occur, you'll be able to handle them by investigating the err variable.
+  // If everything goes okay, then you can pass rows to update() to update the map.
+  function retrievedCSV(err, rows){
+    console.log("CSV was successfully retrieved");
+    update(rows);
+  }
+  // I've cleaned up the code below to make it easier for you to understand and manipulate.
+
+  // This is the URL for your map data. Right now it is requesting that data from the Github URL that was in the
+  // sample code.
+  // When Michael is done, you'll want to change this to the name of the endpoint for the map data that he has put together
+  var urlForMapData = 'https://raw.githubusercontent.com/plotly/datasets/master/2015_06_30_precipitation.csv';
+  //var urlForMapData = 'http://localhost:5000/csv/city-ratio-file.csv';
+
+  //This line below is a function that requests a CSV file using the address in urlForMapData, then after
+  // a response is returned from that request (hopefully a response with the csv data), the function retrievedCSV()
+  // operates using that data.
+  Plotly.d3.csv(urlForMapData, retrievedCSV); // notice this code appears twice. once here and once inside the setInterval() call. This is so that the function runs immediately as well as every 5 seconds.
+
+  // setInterval takes two parameters. The first is the function to run on each interval and the second is the spacing of the interval itself.
+  setInterval(function(){Plotly.d3.csv(urlForMapData, retrievedCSV)}, 5000);
+
+</script>
+
+</body>
