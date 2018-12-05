@@ -14,6 +14,17 @@
   function unpack(rows, key) {
             return rows.map(function(row) { return row[key]; });
         }
+  
+  //An unpack function that returns logistically scaled ratios. Used only to limit min/max size of bubbles on screen
+  function logistic_unpack(rows, key) {
+      return rows.map(function(row) {
+        x = row[key]; 
+        xx = x * -1 * 0.1
+        xxx = Math.exp(xx)
+        xxxx = 50*xxx + 1
+        return 5*(50/xxxx)
+      });
+  }
 
   //This is the function that is getting run every 5 seconds.
   //You should put everything that has to happen every 5 seconds (or whatever interval you decide on) in here.
@@ -26,30 +37,30 @@
     // The code in the next couple of lines is only here so that you can test what happens
     // when the map updates. When the project is finished, you'll need to remove this code
     // and possibly make other modifications.
-    window.rand_rows = [];
+    //window.rand_rows = [];
+    //
+    //for(i=0; i < 1000; i++){
+    //  window.rand_rows.push(window.rows[Math.floor(Math.random() * window.rows.length)]);
+    //}
 
-    for(i=0; i < 1000; i++){
-     window.rand_rows.push(window.rows[Math.floor(Math.random() * window.rows.length)]);
-    }
-
-    console.log(unpack(rand_rows, 'Globvalue'));
+    console.log(unpack(rows, 'Globvalue'));
 
     var data = [{
         type: 'scattergeo',
         mode: 'markers',
-        text: unpack(rand_rows, 'Globvalue'),
-        lon: unpack(rand_rows, 'Lon'),
-        lat: unpack(rand_rows, 'Lat'),
+        text: unpack(rows, 'Place'),
+        lon: unpack(rows, 'Lon'),
+        lat: unpack(rows, 'Lat'),
         marker: {
-          color: unpack(rand_rows, 'Globvalue'),
+          color: 'rgb(150,0,150)',
           colorscale: scl,
           cmin: 0,
           cmax: 1,
           reversescale: true,
-          opacity: 1,
-          size: 3,
+          opacity: 0.7,
+          size: logistic_unpack(rows, 'Globvalue'),
         },
-        name: 'NA Precipitation'
+        name: 'City Relevancy'
     }];
 
     var layout = {
@@ -91,7 +102,7 @@
         range: [ 20.0, 60.0 ],
         dtick: 5
       },
-      title: 'City Relevancy',
+      title: '',//'Social Focus Based on Google Trends Data',
       width: 3840,
       height: 2160,
       titlefont: {
@@ -116,7 +127,7 @@
   // This is the URL for your map data. Right now it is requesting that data from the Github URL that was in the
   // sample code.
   // When Michael is done, you'll want to change this to the name of the endpoint for the map data that he has put together
-  var urlForMapData = '/map';
+  var urlForMapData = 'http://localhost:5000/map';
 
   //This line below is a function that requests a CSV file using the address in urlForMapData, then after
   // a response is returned from that request (hopefully a response with the csv data), the function retrievedCSV()
@@ -124,7 +135,7 @@
   Plotly.d3.csv(urlForMapData, retrievedCSV); // notice this code appears twice. once here and once inside the setInterval() call. This is so that the function runs immediately as well as every 5 seconds.
 
   // setInterval takes two parameters. The first is the function to run on each interval and the second is the spacing of the interval itself.
-  setInterval(function(){Plotly.d3.csv(urlForMapData, retrievedCSV)}, 5000);
+  setInterval(function(){Plotly.d3.csv(urlForMapData, retrievedCSV)}, 650000);
 
 </script>
 

@@ -65,7 +65,7 @@ div#mydiv {
       paper_bgcolor: 'rgb(000,000,000)',
       showlegend: false,
       geo:{
-        //scope: 'north america',
+        scope: 'north america',
         bgcolor: 'rgb(000,000,000)',
         showland: true,
         landcolor: 'rgb(255,255,255)',
@@ -124,8 +124,8 @@ div#mydiv {
   // This is the URL for your map data. Right now it is requesting that data from the Github URL that was in the
   // sample code.
   // When Michael is done, you'll want to change this to the name of the endpoint for the map data that he has put together
-  var urlForMapData = 'https://raw.githubusercontent.com/plotly/datasets/master/2015_06_30_precipitation.csv';
-  //var urlForMapData = 'http://localhost:5000/csv/city-ratio-file.csv';
+  //var urlForMapData = 'https://raw.githubusercontent.com/plotly/datasets/master/2015_06_30_precipitation.csv';
+  var urlForMapData = 'http://localhost:5000/csv/city-ratio-file.csv';
 
   //This line below is a function that requests a CSV file using the address in urlForMapData, then after
   // a response is returned from that request (hopefully a response with the csv data), the function retrievedCSV()
