@@ -1,5 +1,4 @@
 from flask import Flask, send_from_directory
-import pickle
 import os
 
 '''Example taken from http://codepen.io/asommer70/blog/serving-a-static-directory-with-flask'''

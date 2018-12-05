@@ -16,8 +16,8 @@ city_base_relevance = []
 def csvwriter(master_list, out):
     with open(out, "w") as output:
         writer = csv.writer(output, lineterminator='\n')
-        for i in range(0, len(master_list), 2):
-            writer.writerow(master_list[i:i + 2])
+        for i in range(0, len(master_list), 4):
+            writer.writerow(master_list[i:i + 4])
     print("Finished scrape of csv\n")
     output.close()
 
@@ -30,33 +30,42 @@ def csvwriter(master_list, out):
 ####################################################################################
 
 def replace_data_and_write(new_data):
-    path = "C:\\Users\\mikeb\\Documents\\Northwestern\\FQ2018\\DSGN375\\static\\csv\\city-ratio-file.csv"
+    path = "C:\\Users\\mikeb\\Documents\\Github\\Social-Focus\\static\\csv\\city-ratio-file.csv"
     master_list = []
     with open(path, "rb") as old_data:
         reader = csv.reader(old_data)
         master_list = list(reader)
     old_data.close()
 
+    print(master_list)
+    header = master_list[:1]
+    master_list = master_list[1:]
+
     if master_list[0] == []:
         master_list = master_list[0]
     else:
         temp = master_list
         master_list = []
+        for each in header[0]:
+            master_list.append(each)
+
         for each in temp:
             master_list.append(each[0])
             master_list.append(float(each[1]))
+            master_list.append(each[2])
+            master_list.append(each[3])
 
     print("current: " + str(master_list))
     for each in new_data:
-        if each[0] in master_list:
+        #if each[0] in master_list:
             #print("Loc2: " + each[0])
-            indx = master_list.index(each[0])
-            master_list[indx+1] = each[1]
+        indx = master_list.index(each[0])
+        master_list[indx+1] = each[1]
             #print("current:" + str(master_list))
-        else:
+        #else:
             #print("Loc: " + each[0])
-            master_list.append(each[0])
-            master_list.append(each[1])
+            #master_list.append(each[0])
+            #master_list.append(each[1])
             #print("current:" + str(master_list))
 
     csvwriter(master_list, path)
@@ -159,7 +168,7 @@ def analyze_set(data):
 ####################################################################################
 
 def open_csv(num):
-    path = "C:\\Users\\mikeb\\Documents\\Northwestern\\FQ2018\\DSGN375\\city-section-"
+    path = "C:\\Users\\mikeb\\Documents\\Github\\Social-Focus\\city-section-"
     pathend = ".csv"
     url = path + str(num) + pathend
     del cities[:]
@@ -196,7 +205,7 @@ def open_csv(num):
 ####################################################################################
 
 def ___main___():
-    i = 3
+    i = 1
     while True:
 
         if i == 1:
