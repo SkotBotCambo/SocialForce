@@ -18,7 +18,7 @@ def send_index():
 def send_csv():
     '''send_csv() returns the csv file containing the most
     recent data from Google Trends.'''
-    return send_from_directory('static/csv/', 'city-ratio-correct-format.csv')
+    return send_from_directory('static/csv/', 'city-ratio-file.csv')
 
 if __name__ == "__main__":
     host_loc = "127.0.0.1"
